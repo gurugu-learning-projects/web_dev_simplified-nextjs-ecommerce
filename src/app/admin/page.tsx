@@ -8,12 +8,16 @@ import {
 } from "@/components/ui/card";
 import { formatCurrency, formatNumber } from "@/lib/formatters";
 
+function wait(duration: number) {
+  return new Promise((resolve) => setTimeout(resolve, duration));
+}
+
 async function getSalesData() {
   const data = await db.order.aggregate({
     _sum: { pricePaidInCents: true },
     _count: true,
   });
-
+  await wait(3000);
   return {
     amount: (data._sum.pricePaidInCents || 0) / 100,
     numberOfSales: data._count,
