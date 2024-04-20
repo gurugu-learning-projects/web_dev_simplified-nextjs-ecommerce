@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { formatCurrency } from "@/lib/formatters";
 import { Button } from "@/components/ui/button";
 import { addProduct } from "../../_actions/products";
+import { useFormStatus } from "react-dom";
 
 export function ProductForm() {
   const [priceInCents, setPriceInCents] = useState<Number>();
@@ -43,7 +44,17 @@ export function ProductForm() {
         <Label htmlFor="image">Image</Label>
         <Input type="file" id="image" name="image" required />
       </div>
-      <Button type="submit">Save</Button>
+      <SubmitButton />
     </form>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? "Saving..." : "Save"}
+    </Button>
   );
 }
