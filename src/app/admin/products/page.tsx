@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 import { PageHeader } from "../_components/PageHeader";
 
@@ -34,6 +40,7 @@ function ProductsTable() {
           </TableHead>
         </TableRow>
       </TableHeader>
+      <TableBody></TableBody>
     </Table>
   );
 }
