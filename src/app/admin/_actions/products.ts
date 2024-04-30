@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import fs from "fs/promises";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import db from "@/db/db";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
@@ -18,18 +18,12 @@ const addSchema = z.object({
   image: imageSchema.refine((file) => file.size > 0, { message: "Required" }),
 });
 
-export async function addProduct(formData: FormData) {
+export async function addProduct(prevState: unknown, formData: FormData) {
   const parsed = addSchema.safeParse(Object.fromEntries(formData));
 
   if (!parsed.success) {
-    console.log("parsed.error.issues:", parsed.error.issues);
-    console.log(
-      "parsed.error.formErrors.fieldErrors:",
-      parsed.error.formErrors.fieldErrors
-    );
-    return parsed.error.issues;
+    return parsed.error.formErrors.fieldErrors;
   }
-  console.log(parsed);
 
   const data = parsed.data;
 
@@ -44,8 +38,9 @@ export async function addProduct(formData: FormData) {
     Buffer.from(await data.image.arrayBuffer())
   );
 
-  db.product.create({
+  await db.product.create({
     data: {
+      isAvailableForPurchase: false,
       name: data.name,
       description: data.description,
       priceInCents: data.priceInCents,
@@ -55,4 +50,20 @@ export async function addProduct(formData: FormData) {
   });
 
   redirect("/admin/products");
+}
+
+export async function toggleProductAvailability(
+  id: string,
+  isAvailableForPurchase: boolean
+) {
+  await db.product.update({
+    where: { id },
+    data: { isAvailableForPurchase },
+  });
+}
+
+export async function deleteProduct(id: string) {
+  const product = await db.product.delete({ where: { id } });
+
+  if (product === null) return notFound();
 }
