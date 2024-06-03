@@ -4,7 +4,11 @@ import { Product } from "@prisma/client";
 
 import db from "@/db/db";
 import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/ProductCard";
+import {
+  ProductCard,
+  ProductCardSkeleton,
+  ProductCardSkeleton2,
+} from "@/components/ProductCard";
 
 function getMostPopularProducts() {
   return db.product.findMany({
@@ -58,7 +62,7 @@ async function ProductGridSection({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+          <ProductCardSkeleton2 key={product.id} {...product} />
         ))}
       </div>
     </div>
