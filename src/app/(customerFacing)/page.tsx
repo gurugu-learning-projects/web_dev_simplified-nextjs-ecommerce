@@ -10,25 +10,34 @@ import {
   ProductCardSkeleton2,
 } from "@/components/ProductCard";
 import { Suspense } from "react";
+import { cache } from "@/lib/cache";
 
-async function getMostPopularProducts() {
-  await wait(3000);
+const getMostPopularProducts = cache(
+  () => {
+    // await wait(3000);
 
-  return db.product.findMany({
-    where: { isAvailableForPurchase: true },
-    orderBy: { orders: { _count: "desc" } },
-    take: 6,
-  });
-}
+    return db.product.findMany({
+      where: { isAvailableForPurchase: true },
+      orderBy: { orders: { _count: "desc" } },
+      take: 6,
+    });
+  },
+  ["/", "getMostPopularProducts"],
+  { revalidate: 60 * 60 * 24 }
+);
 
-async function getNewestProducts() {
-  await wait(2000);
-  return db.product.findMany({
-    where: { isAvailableForPurchase: true },
-    orderBy: { createdAt: "desc" },
-    take: 6,
-  });
-}
+const getNewestProducts = cache(
+  () => {
+    // await wait(2000);
+    return db.product.findMany({
+      where: { isAvailableForPurchase: true },
+      orderBy: { createdAt: "desc" },
+      take: 6,
+    });
+  },
+  ["/", "getNewestProducts"],
+  { revalidate: 60 * 60 * 24 }
+);
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
