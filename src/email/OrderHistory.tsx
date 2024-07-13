@@ -36,7 +36,7 @@ OrderHistoryEmail.PreviewProps = {
         name: "Product name",
         description: "Some description",
         imagePath:
-          "/products/456ed650-7e6c-408f-8a56-d8915f32380f-photo_2024-04-15_14-59-33.jpg",
+          "/products/9a6ca4b6-5cc7-4add-8feb-34cbd72a7f82-photo_2024-05-15_19-48-47.jpg",
       },
     },
     {
@@ -48,7 +48,7 @@ OrderHistoryEmail.PreviewProps = {
         name: "Product name 2",
         description: "Some other desc",
         imagePath:
-          "/products/22232ad1-e108-40a9-a879-97bfdc455348-435896513_949051780561431_4102423800911517662_n.jpg",
+          "/products/9a6ca4b6-5cc7-4add-8feb-34cbd72a7f82-photo_2024-05-15_19-48-47.jpg",
       },
     },
   ],
